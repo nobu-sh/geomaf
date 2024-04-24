@@ -2,6 +2,8 @@
 
 A handful of geometry and other math related tools I use in vanilla js game engine stuff.
 
+### ⚠️ Package is still in early stages. Nothing has been exhaustively tested, some things not tested at all. Still a WIP!
+
 ## Installation
 
 ```

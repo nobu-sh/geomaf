@@ -1,6 +1,6 @@
 import test from "ava";
 
-import { Vector2 } from "../dist/vec2";
+import { Vector2 } from "..";
 
 test("vec2", (t) => {
 	const vec = new Vector2(1, 2);

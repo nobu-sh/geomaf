@@ -75,7 +75,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nobu-sh/geomaf.git"
+    "url": "git+https://github.com/nobu-sh/geomaf.git"
   },
   "ava": {
     "extensions": {

@@ -18,6 +18,9 @@ export default defineConfig((options: Options) => ({
 	minify: true,
 	splitting: false,
 
+	// Disabling this gives size gainz but error messages are less helpful
+	keepNames: false,
+
 	// Output formats
 	format: ["esm", "cjs"],
 	skipNodeModulesBundle: true,
