@@ -2,6 +2,9 @@
   "name": "geomaf",
   "version": "1.0.0",
   "description": "All my geometry(ish) utilities unified in one location.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "import": {
@@ -31,6 +34,16 @@
       "require": {
         "default": "./dist/vec2.js",
         "types": "./dist/vec2.d.ts"
+      }
+    },
+    "./vec3": {
+      "import": {
+        "default": "./dist/vec3.mjs",
+        "types": "./dist/vec3.d.mts"
+      },
+      "require": {
+        "default": "./dist/vec3.js",
+        "types": "./dist/vec3.d.ts"
       }
     }
   },

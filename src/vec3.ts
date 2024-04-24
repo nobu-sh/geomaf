@@ -457,7 +457,7 @@ export class Vector3 {
 	}
 
 	public add(b: Vector3 | number) {
-		return Vector3.add(this, b);
+		return this.set(Vector3.add(this, b));
 	}
 
 	public static subtract(a: Vector3, b: Vector3 | number) {
@@ -467,7 +467,7 @@ export class Vector3 {
 	}
 
 	public subtract(b: Vector3 | number) {
-		return Vector3.subtract(this, b);
+		return this.set(Vector3.subtract(this, b));
 	}
 
 	public static multiply(a: Vector3, b: Vector3 | number) {
@@ -477,7 +477,7 @@ export class Vector3 {
 	}
 
 	public multiply(b: Vector3 | number) {
-		return Vector3.multiply(this, b);
+		return this.set(Vector3.multiply(this, b));
 	}
 
 	public static divide(a: Vector3, b: Vector3 | number) {
@@ -487,7 +487,7 @@ export class Vector3 {
 	}
 
 	public divide(b: Vector3 | number) {
-		return Vector3.divide(this, b);
+		return this.set(Vector3.divide(this, b));
 	}
 
 	public static negate(v: Vector3) {
@@ -495,7 +495,7 @@ export class Vector3 {
 	}
 
 	public negate() {
-		return Vector3.negate(this);
+		return this.set(Vector3.negate(this));
 	}
 
 	public static abs(v: Vector3) {
@@ -503,7 +503,7 @@ export class Vector3 {
 	}
 
 	public abs() {
-		return Vector3.abs(this);
+		return this.set(Vector3.abs(this));
 	}
 
 	// Class string tag

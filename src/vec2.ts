@@ -275,7 +275,7 @@ export class Vector2 {
 	}
 
 	public add(b: Vector2 | number) {
-		return Vector2.add(this, b);
+		return this.set(Vector2.add(this, b));
 	}
 
 	public static subtract(a: Vector2, b: Vector2 | number) {
@@ -285,7 +285,7 @@ export class Vector2 {
 	}
 
 	public subtract(b: Vector2 | number) {
-		return Vector2.subtract(this, b);
+		return this.set(Vector2.subtract(this, b));
 	}
 
 	public static multiply(a: Vector2, b: Vector2 | number) {
@@ -295,7 +295,7 @@ export class Vector2 {
 	}
 
 	public multiply(b: Vector2 | number) {
-		return Vector2.multiply(this, b);
+		return this.set(Vector2.multiply(this, b));
 	}
 
 	public static divide(a: Vector2, b: Vector2 | number) {
@@ -305,7 +305,7 @@ export class Vector2 {
 	}
 
 	public divide(b: Vector2 | number) {
-		return Vector2.divide(this, b);
+		return this.set(Vector2.divide(this, b));
 	}
 
 	public static negate(a: Vector2) {
@@ -313,8 +313,7 @@ export class Vector2 {
 	}
 
 	public negate() {
-		this.x = -this.x;
-		this.y = -this.y;
+		return this.set(Vector2.negate(this));
 	}
 
 	public static abs(a: Vector2) {
@@ -322,8 +321,7 @@ export class Vector2 {
 	}
 
 	public abs() {
-		this.x = Math.abs(this.x);
-		this.y = Math.abs(this.y);
+		return this.set(Vector2.abs(this));
 	}
 
 	public static floor(a: Vector2) {
