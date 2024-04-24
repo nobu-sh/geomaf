@@ -1,0 +1,89 @@
+{
+  "name": "geomaf",
+  "version": "1.0.0",
+  "description": "All my geometry(ish) utilities unified in one location.",
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./dist/index.mjs",
+        "types": "./dist/index.d.mts"
+      },
+      "require": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      }
+    },
+    "./math": {
+      "import": {
+        "default": "./dist/math.mjs",
+        "types": "./dist/math.d.mts"
+      },
+      "require": {
+        "default": "./dist/math.js",
+        "types": "./dist/math.d.ts"
+      }
+    },
+    "./vec2": {
+      "import": {
+        "default": "./dist/vec2.mjs",
+        "types": "./dist/vec2.d.mts"
+      },
+      "require": {
+        "default": "./dist/vec2.js",
+        "types": "./dist/vec2.d.ts"
+      }
+    }
+  },
+  "files": [
+    "dist/**",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup && npm run postbuild",
+    "watch": "tsup --watch --onSuccess \"npm run postbuild\"",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "postbuild": "node ./post-build.cjs",
+    "prepublish": "npm run build",
+    "test": "ava"
+  },
+  "keywords": [
+    "vector",
+    "matrix",
+    "math"
+  ],
+  "author": {
+    "name": "nobu.sh",
+    "email": "chat@nobu.sh",
+    "url": "https://nobu.sh/"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nobu-sh/geomaf.git"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--import=tsimp"
+    ],
+    "files": [
+      "test/**/*.spec.ts"
+    ],
+    "cache": false,
+    "timeout": "10s"
+  },
+  "devDependencies": {
+    "@ariesclark/eslint-config": "^1.7.2",
+    "ava": "^6.1.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-ava": "^14.0.0",
+    "tsimp": "^2.0.11",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  }
+}
