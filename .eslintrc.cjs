@@ -16,6 +16,9 @@ module.exports = {
 		// We love our magic numbers in math, this gets annoying
 		"unicorn/numeric-separators-style": "off",
 		// We extend the math namespace in this project
-		"@typescript-eslint/no-namespace": "off"
+		"@typescript-eslint/no-namespace": "off",
+		// This annoys me I prefer more overloads that are more specific
+		// rather than less with overloaded optional parameters
+		"@typescript-eslint/unified-signatures": "off"
 	}
 };

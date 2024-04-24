@@ -25,7 +25,6 @@ export class Vector2 {
 
 	public constructor();
 	public constructor(x: number, y: number);
-	// eslint-disable-next-line @typescript-eslint/unified-signatures -- no we don't want to unify the signatures
 	public constructor(v: Vector2);
 	public constructor(x?: number | Vector2, y?: number) {
 		if (x instanceof Vector2) {
@@ -46,7 +45,7 @@ export class Vector2 {
 	}
 
 	public get normalized() {
-		return new Vector2(this.x, this.y).normalize();
+		return Vector2.normalize(this);
 	}
 
 	public get magnitude() {
@@ -93,29 +92,27 @@ export class Vector2 {
 		return Vector2.negativeInfinityVector.copy();
 	}
 
-	public set(newX: number, newY: number) {
-		this.x = newX;
-		this.y = newY;
+	public set(v: Vector2): this;
+	public set(x: number, y: number): this;
+	public set(x: number | Vector2, y?: number): this {
+		if (x instanceof Vector2) {
+			this.x = x.x;
+			this.y = x.y;
+		} else {
+			this.x = x;
+			this.y = y ?? this.y;
+		}
+
+		return this;
 	}
 
 	public static lerp(a: Vector2, b: Vector2, t: number) {
 		t = Math.clamp01(t);
-		return new Vector2(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
-	}
-
-	public lerp(to: Vector2, t: number) {
-		t = Math.clamp01(t);
-		this.x += (to.x - this.x) * t;
-		this.y += (to.y - this.y) * t;
+		return Vector2.lerpUnclamped(a, b, t);
 	}
 
 	public static lerpUnclamped(a: Vector2, b: Vector2, t: number) {
 		return new Vector2(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
-	}
-
-	public lerpUnclamped(to: Vector2, t: number) {
-		this.x += (to.x - this.x) * t;
-		this.y += (to.y - this.y) * t;
 	}
 
 	public static moveTowards(
@@ -140,40 +137,21 @@ export class Vector2 {
 		);
 	}
 
-	public moveTowards(target: Vector2, maxDistanceDelta: number) {
-		const num = target.x - this.x;
-		const num2 = target.y - this.y;
-		const num3 = num * num + num2 * num2;
-		if (
-			num3 === 0 ||
-			(maxDistanceDelta >= 0 && num3 <= maxDistanceDelta * maxDistanceDelta)
-		) {
-			this.set(target.x, target.y);
-			return;
-		}
-
-		const num4 = Math.sqrt(num3);
-		this.x += (num / num4) * maxDistanceDelta;
-		this.y += (num2 / num4) * maxDistanceDelta;
-	}
-
 	public static scale(a: Vector2, b: Vector2) {
 		return new Vector2(a.x * b.x, a.y * b.y);
 	}
 
-	public scale(scale: Vector2) {
-		this.x *= scale.x;
-		this.y *= scale.y;
+	public static normalize(vector: Vector2) {
+		const num = vector.magnitude;
+		if (num > Vector2.kEpsilon) {
+			return new Vector2(vector.x / num, vector.y / num);
+		}
+
+		return Vector2.zero.copy();
 	}
 
 	public normalize() {
-		const num = this.magnitude;
-		if (num > Vector2.kEpsilon) {
-			this.x /= num;
-			this.y /= num;
-		} else {
-			this.set(0, 0);
-		}
+		return this.set(Vector2.normalize(this));
 	}
 
 	public static equals(a: Vector2, b: Vector2) {
@@ -181,15 +159,11 @@ export class Vector2 {
 	}
 
 	public equals(other: Vector2) {
-		return this.x === other.x && this.y === other.y;
+		return Vector2.equals(this, other);
 	}
 
 	public static dot(lhs: Vector2, rhs: Vector2) {
 		return lhs.x * rhs.x + lhs.y * rhs.y;
-	}
-
-	public dot(other: Vector2) {
-		return this.x * other.x + this.y * other.y;
 	}
 
 	public static reflect(inDirection: Vector2, inNormal: Vector2) {
@@ -198,12 +172,6 @@ export class Vector2 {
 			num * inNormal.x + inDirection.x,
 			num * inNormal.y + inDirection.y
 		);
-	}
-
-	public reflect(inNormal: Vector2) {
-		const num = -2 * Vector2.dot(inNormal, this);
-		this.x = num * inNormal.x + this.x;
-		this.y = num * inNormal.y + this.y;
 	}
 
 	public static perpendicular(inDirection: Vector2) {
@@ -220,37 +188,15 @@ export class Vector2 {
 		return Math.acos(num2) * 57.29578;
 	}
 
-	public angle(to: Vector2) {
-		const num = Math.sqrt(this.sqrMagnitude * to.sqrMagnitude);
-		if (num < Vector2.kEpsilonNormalSqrt) {
-			return 0;
-		}
-
-		const num2 = Math.clamp(this.dot(to) / num, -1, 1);
-		return Math.acos(num2) * 57.29578;
-	}
-
 	public static signedAngle(from: Vector2, to: Vector2) {
 		const num = Vector2.angle(from, to);
 		const num2 = Math.sign(from.x * to.y - from.y * to.x);
 		return num * num2;
 	}
 
-	public signedAngle(to: Vector2) {
-		const num = this.angle(to);
-		const num2 = Math.sign(this.x * to.y - this.y * to.x);
-		return num * num2;
-	}
-
 	public static distance(a: Vector2, b: Vector2) {
 		const num = a.x - b.x;
 		const num2 = a.y - b.y;
-		return Math.hypot(num, num2);
-	}
-
-	public distance(to: Vector2) {
-		const num = this.x - to.x;
-		const num2 = this.y - to.y;
 		return Math.hypot(num, num2);
 	}
 
@@ -322,40 +268,44 @@ export class Vector2 {
 		return new Vector2(Math.max(lhs.x, rhs.x), Math.max(lhs.y, rhs.y));
 	}
 
-	public static add(a: Vector2, b: Vector2) {
-		return new Vector2(a.x + b.x, a.y + b.y);
+	public static add(a: Vector2, b: Vector2 | number) {
+		return b instanceof Vector2
+			? new Vector2(a.x + b.x, a.y + b.y)
+			: new Vector2(a.x + b, a.y + b);
 	}
 
-	public add(b: Vector2) {
-		this.x += b.x;
-		this.y += b.y;
+	public add(b: Vector2 | number) {
+		return Vector2.add(this, b);
 	}
 
-	public static subtract(a: Vector2, b: Vector2) {
-		return new Vector2(a.x - b.x, a.y - b.y);
+	public static subtract(a: Vector2, b: Vector2 | number) {
+		return b instanceof Vector2
+			? new Vector2(a.x - b.x, a.y - b.y)
+			: new Vector2(a.x - b, a.y - b);
 	}
 
-	public subtract(b: Vector2) {
-		this.x -= b.x;
-		this.y -= b.y;
+	public subtract(b: Vector2 | number) {
+		return Vector2.subtract(this, b);
 	}
 
-	public static multiply(a: Vector2, b: Vector2) {
-		return new Vector2(a.x * b.x, a.y * b.y);
+	public static multiply(a: Vector2, b: Vector2 | number) {
+		return b instanceof Vector2
+			? new Vector2(a.x * b.x, a.y * b.y)
+			: new Vector2(a.x * b, a.y * b);
 	}
 
-	public multiply(b: Vector2) {
-		this.x *= b.x;
-		this.y *= b.y;
+	public multiply(b: Vector2 | number) {
+		return Vector2.multiply(this, b);
 	}
 
-	public static divide(a: Vector2, b: Vector2) {
-		return new Vector2(a.x / b.x, a.y / b.y);
+	public static divide(a: Vector2, b: Vector2 | number) {
+		return b instanceof Vector2
+			? new Vector2(a.x / b.x, a.y / b.y)
+			: new Vector2(a.x / b, a.y / b);
 	}
 
-	public divide(b: Vector2) {
-		this.x /= b.x;
-		this.y /= b.y;
+	public divide(b: Vector2 | number) {
+		return Vector2.divide(this, b);
 	}
 
 	public static negate(a: Vector2) {
